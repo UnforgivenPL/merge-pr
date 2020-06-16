@@ -1,0 +1,19 @@
+on:
+  pull_request:
+    types: [labeled]
+
+jobs:
+  test-merge-pull-request:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.state == "open" }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Merge an open PR to master branch
+        uses: ./
+        with:
+  repository: UnforgivenPL/merge-pr
+  token: ${{ secrets.GITHUB_TOKEN }}
+  pr: ${{ github.event.number }}
+  commit-message: "automatic merge of PR #${{ github.event.number }}"
+  must-have-labels: "automerge"
+

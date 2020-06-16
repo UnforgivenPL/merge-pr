@@ -1,0 +1,52 @@
+name: "Merge Pull Request"
+description: "Merge a pull request."
+inputs:
+  repository:
+    description: Path to repository to make PR in.
+    required: true
+  token:
+    description: Auth token with enough privileges to merge the given PR in the given repository.
+    required: true
+  pr:
+    description: Number of an open PR in the repository.
+    required: true
+  merge-method:
+    description: Method of merging, one of "merge" (default), "squash" or "rebase".
+    required: false
+    default: "merge"
+  delete-branch:
+    description: Whether or not to delete branch. Must be "true" (default) or "false".
+    required: false
+    default: "true"
+  commit-message:
+    description: Commit message. Defaults to "automatic merge of PR <number>"
+    required: false
+    default: "-"
+  commit-details:
+    description: Commit message details. Defaults to "merging branch <source> into <target>"
+    required: false
+    default: "-"
+  must-have-labels:
+    description: Comma-separated labels that the given PR must have for the action to run. Defaults to none.
+    required: false
+    default: "-"
+  must-not-have-labels:
+    description: Comma-separated labels that the given PR must not have. Defaults to none.
+    required: false
+    default: "-"
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.repository }}
+    - ${{ inputs.token }}
+    - ${{ inputs.pr }}
+    - ${{ inputs.merge-method }}
+    - ${{ inputs.delete-branch }}
+    - ${{ inputs.commit-message }}
+    - ${{ inputs.commit-details }}
+    - ${{ inputs.must-have-labels }}
+    - ${{ inputs.must-not-have-labels }}
+branding:
+  color: red
+  icon: git-branch
