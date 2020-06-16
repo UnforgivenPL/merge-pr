@@ -48,7 +48,7 @@ begin
   puts '...merge completed...'
   if ARGV[4] == '-' || ARGV[4] == "true"
     puts "...deleting branch #{existing_pr.head.ref}..."
-    github.git_data.references.delete(user: user, repo: repository, ref: existing_pr.head.ref)
+    github.git_data.references.delete(user: user, repo: repository, ref: "heads/#{existing_pr.head.ref}")
   end
   puts 'all done; thank you!'
 rescue Github::Error::Conflict => e
