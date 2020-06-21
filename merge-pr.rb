@@ -33,7 +33,13 @@ begin
     exit 400
   end
 
-  puts("(requested delay of #{ARGV[9]} seconds, hold on)") or sleep(ARGV[9].to_i) if ARGV[9] =~ /^\d+$/ && ARGV[9].to_i > 0
+  if ARGV[9] =~ /^\d+$/ && ARGV[9].to_i.positive?
+    puts "...delay of #{ARGV[9]} seconds specified, waiting..."
+    sleep(ARGV[9].to_i)
+    puts '...done waiting, resuming merging...'
+  else
+    puts "...delay provided as #{ARGV[9]}, no waiting"
+  end
 
   required_labels, rejected_labels = [7, 8].map { |num| ARGV[num] && ARGV[num] != '-' ? ARGV[num].split(/\s*,\s*/) : []}
   pr_labels = existing_pr.labels.map(&:name)
@@ -43,13 +49,13 @@ begin
     exit 402
   end
 
-  puts "...ok; attempting to merge..."
+  puts '...ok; attempting to merge...'
   merge_method = ARGV[3].nil? || ARGV[3] == '-' ? 'merge' : ARGV[3]
   commit_title = ARGV[5].nil? || ARGV[5] == '-' ? "automatic merge of PR ##{number}" : ARGV[5]
   commit_details = ARGV[6].nil? || ARGV[6] == '-' ? "merging branch #{existing_pr.head.ref} to #{existing_pr.base.ref}" : ARGV[6]
   github.pulls.merge(user: user, repo: repository, number: number, merge_method: merge_method, sha: existing_pr.head.sha, commit_title: commit_title, commit_details: commit_details)
   puts '...merge completed...'
-  if ARGV[4] == '-' || ARGV[4] == "true"
+  if ARGV[4] == '-' || ARGV[4] == 'true'
     puts "...deleting branch #{existing_pr.head.ref}..."
     github.git_data.references.delete(user: user, repo: repository, ref: "heads/#{existing_pr.head.ref}")
   end
