@@ -33,9 +33,9 @@ begin
     exit 400
   end
 
-  puts("(requested delay of #{ARGV[9]} seconds, hold on)") and sleep(ARGV[9].to_i) if ARGV[9] =~ /^\d+$/ && ARGV[9].to_i > 0
+  puts("(requested delay of #{ARGV[9]} seconds, hold on)") or sleep(ARGV[9].to_i) if ARGV[9] =~ /^\d+$/ && ARGV[9].to_i > 0
 
-  required_labels, rejected_labels = [7, 8].map{ |num| ARGV[num] && ARGV[num] != '-' ? ARGV[num].split(/\s*,\s*/) : []}
+  required_labels, rejected_labels = [7, 8].map { |num| ARGV[num] && ARGV[num] != '-' ? ARGV[num].split(/\s*,\s*/) : []}
   pr_labels = existing_pr.labels.map(&:name)
   puts "...found PR with labels #{pr_labels}..."
   unless (required_labels.empty? || required_labels & pr_labels == required_labels) && (rejected_labels.empty? || (rejected_labels & pr_labels).empty?)
