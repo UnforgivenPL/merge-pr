@@ -51,6 +51,7 @@ runs:
     - ${{ inputs.commit-details }}
     - ${{ inputs.must-have-labels }}
     - ${{ inputs.must-not-have-labels }}
+    - ${{ inputs.delay }}
 branding:
   color: red
   icon: git-branch
