@@ -16,6 +16,7 @@ unless ARGV.size >= 3 && ARGV[0].include?('/') && ARGV[2] =~ /^\d+$/ && %w[true 
       6 = commit details     (optional; '-' means default: "merging branch <source> to <target>")
       7 = labels to have     (optional; '-' means none; PR must have ALL of the comma-separated labels)
       8 = labels to not have (optional; '-' means none; PR must have NONE of the comma-separated labels)
+      9 = delay in seconds   (optional; specifies the delay in performing the merge; defaults to 0)
   HELP
 end
 
@@ -31,6 +32,8 @@ begin
     puts "...existing PR is in state #{existing_pr.state}, cannot continue!"
     exit 400
   end
+
+  puts("(requested delay of #{ARGV[9]} seconds, hold on)") and sleep(ARGV[9].to_i) if ARGV[9] =~ /^\d+$/ && ARGV[9].to_i > 0
 
   required_labels, rejected_labels = [7, 8].map{ |num| ARGV[num] && ARGV[num] != '-' ? ARGV[num].split(/\s*,\s*/) : []}
   pr_labels = existing_pr.labels.map(&:name)

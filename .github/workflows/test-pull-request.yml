@@ -15,5 +15,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           pr: ${{ github.event.number }}
           merge-method: squash
+          delay: 30
           commit-message: "automatic merge of PR #${{ github.event.number }}"
           must-have-labels: "automerge"
