@@ -34,6 +34,10 @@ inputs:
     description: Comma-separated labels that the given PR must not have. Defaults to none.
     required: false
     default: "-"
+  delay:
+    description: Delay (in seconds) before the merge happens. Defaults to 0, meaning no delay.
+    required: false
+    default: 0
 runs:
   using: 'docker'
   image: 'Dockerfile'

@@ -1,6 +1,8 @@
 # merge-pr
 GitHub action for merging a PR. It should be run when the PR is in a state of able to merge, so probably it is best used `on: check_suite` that is completed and successful.
 
+Note: `check_suite` events are **not** triggered if the PR has been created by GitHub actions. However, PR creation events are triggered normally (when using personal access token) - so simply adding a `delay` should allow automatic merge. Note that if the delay is too short and branch checks are still in progress, or mandatory checks failed, the automatic merge also fails.
+
 # Inputs
 ## `repository`
 **Required.** Path to repository to make PR in.
@@ -12,6 +14,8 @@ GitHub action for merging a PR. It should be run when the PR is in a state of ab
 Method of merging, one of "merge" (default), "squash" or "rebase".
 ## `delete-branch`
 Whether or not to delete branch. Must be "true" (default) or "false".
+## `delay`
+The number of seconds to delay the merging. Any non-zero number will cause the action to wait. Defaults to `0` (no waiting).
 ## `commit-message`
 Commit message. Defaults to "automatic merge of PR <number>"
 ## `commit-details`
